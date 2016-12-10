@@ -11,6 +11,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         super(context, TaskContract.DB_NAME, null, TaskContract.DB_VERSION);
     }
 
+    //Create the table
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TaskContract.TaskEntry.TABLE + " ( " +

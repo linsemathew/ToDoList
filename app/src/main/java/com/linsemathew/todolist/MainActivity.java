@@ -6,11 +6,14 @@ import android.os.Bundle;
 public class MainActivity extends AppCompatActivity {
     //Tag for logging
     private static final String TAG = "MainActivity";
+    private TaskDbHelper mHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Initializes TaskDbHelper
+        mHelper = new TaskDbHelper(this);
     }
 
     //Renders the menu
@@ -34,8 +37,16 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //Store data in the database
                                 String task = String.valueOf(taskEditText.getText());
-                                Log.d(TAG, "Task to add: " + task);
+                                SQLiteDatabase db = mHelper.getWritableDatabase();
+                                ContentValues values = new ContentValues();
+                                values.put(TaskContract.TaskEntry.COL_TASK_TITLE, task);
+                                db.insertWithOnConflict(TaskContract.TaskEntry.TABLE,
+                                        null,
+                                        values,
+                                        SQLiteDatabase.CONFLICT_REPLACE);
+                                db.close();
                             }
                         })
                         .setNegativeButton("Cancel", null)
