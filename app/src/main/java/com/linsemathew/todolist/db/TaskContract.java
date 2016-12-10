@@ -1,9 +1,9 @@
-package com.linsemathew.todolist;
+package com.linsemathew.todolist.db;
 
 import android.provider.BaseColumns;
 
 public class TaskContract {
-    //Constants to access database
+    // Constants to access database
     public static final String DB_NAME = "com.linsemathew.todolist";
     public static final int DB_VERSION = 1;
 
