@@ -8,12 +8,24 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TaskDbHelper mHelper;
 
+    //Fetch data from db and show it in the menu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Initializes TaskDbHelper
+
+        //Make a new instance of TaskDbHelper
         mHelper = new TaskDbHelper(this);
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE},
+                null, null, null, null, null);
+        while(cursor.moveToNext()) {
+            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
+            Log.d(TAG, "Task: " + cursor.getString(idx));
+        }
+        cursor.close();
+        db.close();
     }
 
     //Renders the menu
